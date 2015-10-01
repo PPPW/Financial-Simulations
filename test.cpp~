@@ -1,0 +1,7 @@
+#include <vector>
+#include <iostream>
+
+int main() {
+    std::vector<double> v(5);
+    std::cout << v[2] << std::endl;
+}

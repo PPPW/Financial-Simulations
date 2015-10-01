@@ -1,0 +1,6 @@
+class VanillaOption : public Instrument 
+{
+public:
+    
+private:
+}

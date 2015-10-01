@@ -1,0 +1,21 @@
+#include "VanillaOption.hpp"
+#include <math.h>
+
+VanillaOption::VanillaOption(OptionType optionType_, 
+                             double expiry_, double strike_) 
+    : optionType(optionType_), expiry(expiry_), strike(strike_)
+{}
+
+double VanillaOption::getExpiry() cosnt { return expiry; }
+
+double VanillaOption::getPayOff (double spot) const
+{
+    switch (optionType) {
+    case call:
+        return max(strike - spot, 0);
+    case put:
+        return max(spot - strike, 0);
+    default:
+        throw("Invalid option type.");
+    }
+}

@@ -1,0 +1,23 @@
+template<class optionType>
+class BlackScholes
+{
+ public:
+    BlackScholes(const optionType& option_,
+                 double T_, 
+                 double r_,
+                 double d_,
+                 double K_,
+                 double S_,
+                 double vol_) {}
+    double getPrice();
+ private:
+    optionType option;
+    double T;
+    double r;
+    double d;
+    double K;
+    double S;
+    double vol;
+};
+
+

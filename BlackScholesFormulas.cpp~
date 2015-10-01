@@ -1,0 +1,28 @@
+#include "BlackScholes.h"
+#include <boost/math/distributions.hpp>
+#include <math.h>
+#include <iostream>
+
+BlackScholes::BlackScholes(const optionType& option_,
+                           double T_, 
+                           double r_,
+                           double d_,
+                           double K_,
+                           double S_,
+                           double vol_) : option(option_), T(T_), r(r_),
+                                          d(d_), K(K_), S(S_), vol(vol_) 
+{}
+
+BlackScholes::getPrice() 
+{
+    boost::math::normal_distribution <> norm(0,1);
+    double d1 = ( log(S/K)+(r+vol*vol/2)*T ) / vol / sqrt(T);
+    double d2 = ( log(S/K)+(r-vol*vol/2)*T ) / vol / sqrt(T);
+    return S*exp(-d*T)*cdf(norm, d1) - K*exp(-r*T)*cdf(norm, d2);
+}
+
+int main() {
+    callOption call();
+    BlackScholes BS();
+    std::cout << BS.getPrice() << std::endl;
+}
