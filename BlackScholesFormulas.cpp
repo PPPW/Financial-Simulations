@@ -22,8 +22,9 @@ double BlackScholesPut(double spot, double strike, double expiry,
     return -spot*exp(-dvdnt*expiry)*cdf(norm, -d1) 
         + strike*exp(-r*expiry)*cdf(norm, -d2);
 }
-
+/*
 int main() {
     double price = BlackScholesPut(100., 105., 20., 0.01/365, 0., 0.02); 
     std::cout << price << std::endl;
 }
+*/

@@ -1,0 +1,6 @@
+#ifndef VANILLA_GREEKS
+#define VANILLA_GREEKS
+
+double DeltaCall
+
+#endif

@@ -1,0 +1,11 @@
+#ifndef HEDGING_STATEGY
+#define HEDGING_STATEGY
+
+class HedgingStategy 
+{
+public:
+    HedgingStategy()
+private:
+};
+
+#endif

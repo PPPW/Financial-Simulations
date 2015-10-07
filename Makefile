@@ -1,14 +1,27 @@
-OBJS = MonteCarlo.o VanillaOption.o
-CC = g++
+OBJS = HedgingPnL.o BlackScholesHedgingStrategy.o BlackScholesPathGenerator.o VanillaOption.o VanillaGreeks.o BlackScholesFormulas.o
+CC = g++ -I /usr/local/include -std=c++11
 DEBUG = -g
-CFLAGS = -c -std=c++11
-LFLAGS = -std=c++11
+CFLAGS = -c  
+LFLAGS = 
 
-mc : $(OBJS)
-	$(CC) $(LFLAGS) $(OBJS) -o mc
+hedgePnL : $(OBJS)
+	$(CC) $(LFLAGS) $(OBJS) -o hedgePnL
 
-MonteCarlo.o : MonteCarlo.hpp MonteCarlo.cpp VanillaOption.hpp VanillaOption.cpp
-	$(CC) $(CFLAGS) MonteCarlo.cpp
+HedgingPnL.o : HedgingPnL.hpp HedgingPnL.cpp BlackScholesHedgingStrategy.hpp BlackScholesHedgingStrategy.cpp BlackScholesPathGenerator.hpp BlackScholesPathGenerator.cpp VanillaOption.hpp VanillaOption.cpp
+	$(CC) $(CFLAGS) HedgingPnL.cpp
+
+BlackScholesHedgingStrategy.o : BlackScholesHedgingStrategy.hpp BlackScholesHedgingStrategy.cpp BlackScholesPathGenerator.hpp BlackScholesPathGenerator.cpp VanillaOption.hpp VanillaOption.cpp VanillaGreeks.hpp VanillaGreeks.cpp
+	$(CC) $(CFLAGS) BlackScholesHedgingStrategy.cpp
+
+BlackScholesPathGenerator.o : BlackScholesPathGenerator.hpp BlackScholesPathGenerator.cpp
+	$(CC) $(CFLAGS) BlackScholesPathGenerator.cpp
 
 VanillaOption.o : VanillaOption.hpp VanillaOption.cpp
 	$(CC) $(CFLAGS) VanillaOption.cpp
+
+VanillaGreeks.o : VanillaGreeks.hpp VanillaGreeks.cpp BlackScholesFormulas.hpp BlackScholesFormulas.cpp
+	$(CC) $(CFLAGS) VanillaGreeks.cpp
+
+BlackScholesFormulas.o : BlackScholesFormulas.hpp BlackScholesFormulas.cpp
+	$(CC) $(CFLAGS) BlackScholesFormulas.cpp
+

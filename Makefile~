@@ -1,8 +1,0 @@
-OBJS = MonteCarlo.o VanillaOption.o
-CC = g++
-DEBUG = -g
-CFLAGS = -c
-LFLAGS = 
-
-mc : $(OBJS)
-	$(CC) $(LFLAGS) $(OBJS) -o mc

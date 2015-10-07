@@ -3,11 +3,17 @@
 #include <iostream>
 
 VanillaOption::VanillaOption(OptionType optionType_, 
-                             double expiry_, double strike_) 
+                             double expiry_, 
+                             double strike_) 
     : optionType(optionType_), expiry(expiry_), strike(strike_)
 {}
 
+VanillaOption::OptionType VanillaOption::getType() const 
+{ return optionType; }
+
 double VanillaOption::getExpiry() const { return expiry; }
+
+double VanillaOption::getStrike() const { return strike; }
 
 double VanillaOption::getPayOff (double spot) const
 {
@@ -26,5 +32,7 @@ int main() {
     //std::cout << call.getExpiry() << " " << call.getPayOff(110.) << std::endl;
     VanillaOption* callPtr = &call;
     std::cout << callPtr->getExpiry() << "\n";
+    std::cout << callPtr->getType() << "\n";
+    std::cout << callPtr->getStrike() << "\n";
 }
 */

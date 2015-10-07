@@ -1,0 +1,82 @@
+#include "VanillaGreeks.hpp"
+#include "BlackScholesFormulas.hpp"
+#include <boost/math/distributions.hpp>
+#include <math.h>
+#include <iostream>
+
+double DeltaCall(double spot, double strike, double expiry, 
+                        double r, double dvdnt, double vol)
+{
+    boost::math::normal_distribution<> norm(0,1);
+    double d1 = ( log(spot/strike)+(r+vol*vol/2)*expiry ) / vol / sqrt(expiry);
+    return cdf(norm, d1);
+}
+
+double DeltaPut(double spot, double strike, double expiry, 
+                        double r, double dvdnt, double vol)
+{    
+    boost::math::normal_distribution<> norm(0,1);
+    double d1 = ( log(spot/strike)+(r+vol*vol/2)*expiry ) / vol / sqrt(expiry);
+    return cdf(norm, d1) - 1;
+}
+
+double Gamma(double spot, double strike, double expiry, 
+                        double r, double dvdnt, double vol)
+{
+    boost::math::normal_distribution<> norm(0,1);
+    double d1 = ( log(spot/strike)+(r+vol*vol/2)*expiry ) / vol / sqrt(expiry);
+    return pdf(norm, d1)/spot/vol/sqrt(expiry);    
+}
+
+double Vega(double spot, double strike, double expiry, 
+                        double r, double dvdnt, double vol)
+{
+    boost::math::normal_distribution<> norm(0,1);
+    double d1 = ( log(spot/strike)+(r+vol*vol/2)*expiry ) / vol / sqrt(expiry);
+    return spot*sqrt(expiry)*pdf(norm, d1);
+}
+
+double RhoCall(double spot, double strike, double expiry, 
+                        double r, double dvdnt, double vol)
+{
+    boost::math::normal_distribution<> norm(0,1);
+    double d2 = ( log(spot/strike)+(r-vol*vol/2)*expiry ) / vol / sqrt(expiry);
+    return expiry*spot*exp(-r*expiry)*cdf(norm, d2);
+}
+
+double RhoPut(double spot, double strike, double expiry, 
+                        double r, double dvdnt, double vol)
+{
+    boost::math::normal_distribution<> norm(0,1);
+    double d2 = ( log(spot/strike)+(r-vol*vol/2)*expiry ) / vol / sqrt(expiry);
+    return -expiry*spot*exp(-r*expiry)*cdf(norm, -d2);
+}
+
+double ThetaCall(double spot, double strike, double expiry, 
+                        double r, double dvdnt, double vol)
+{
+    boost::math::normal_distribution<> norm(0,1);
+    double d1 = ( log(spot/strike)+(r+vol*vol/2)*expiry ) / vol / sqrt(expiry);
+    double d2 = d1 - vol*sqrt(expiry);
+    return -r*strike*exp(-r*expiry)*cdf(norm, d2)
+        - vol*spot*0.5/sqrt(expiry)*pdf(norm, d1);
+}
+
+double ThetaPut(double spot, double strike, double expiry, 
+                        double r, double dvdnt, double vol)
+{
+    boost::math::normal_distribution<> norm(0,1);
+    double d1 = ( log(spot/strike)+(r+vol*vol/2)*expiry ) / vol / sqrt(expiry);
+    double d2 = d1 - vol*sqrt(expiry);
+    return r*strike*exp(-r*expiry)*cdf(norm, -d2)
+        - vol*spot*0.5/sqrt(expiry)*pdf(norm, d1);
+}
+/*
+int main() {
+    std::cout << DeltaCall(100., 95, 20, 0.01, 0.0, 0.2) << std::endl;
+    double fromBS = ( BlackScholesCall(100.01, 95, 20, 0.01, 0.0, 0.2)
+                      - BlackScholesCall(100., 95, 20, 0.01, 0.0, 0.2))/0.01;
+    std::cout << fromBS << std::endl;
+
+}
+*/

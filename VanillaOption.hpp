@@ -10,7 +10,9 @@ public:
     VanillaOption(OptionType optionType_, 
                   double expiry_,
                   double strike_);
+    OptionType getType() const;   
     double getExpiry() const;
+    double getStrike() const;
     double getPayOff(double spot) const;
 private:
     OptionType optionType;

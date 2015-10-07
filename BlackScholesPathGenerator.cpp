@@ -1,0 +1,48 @@
+#include "BlackScholesPathGenerator.hpp"
+#include <boost/random.hpp>
+#include <fstream>
+
+BlackScholesPathGenerator::
+BlackScholesPathGenerator(double spot_,                           
+                          double drift_, 
+                          double dvdnt_, 
+                          double vol_,
+                          double expiry_,
+                          unsigned long NumOfSteps_) 
+    : spot(spot_), drift(drift_), dvdnt(dvdnt_), vol(vol_), expiry(expiry_),
+      NumOfSteps(NumOfSteps_)
+{
+    path.resize(NumOfSteps + 1);
+}
+
+std::vector<double> BlackScholesPathGenerator::getPaths() 
+{
+    unsigned long seed =12411;
+    boost::mt19937 rng(seed);
+    boost::normal_distribution <> norm(0.0, 1.0);    
+    boost::variate_generator<boost::mt19937&,boost::normal_distribution<> > 
+        randNorm(rng, norm);
+
+    double currentSpot = spot;
+    double increment = expiry/NumOfSteps;
+    for (int i = 0; i <= NumOfSteps; i++) {
+        currentSpot *= exp( (drift-0.5*vol*vol)*increment
+                            + vol*sqrt(increment)*randNorm() );
+        path[i] = currentSpot;
+    }
+    return path;
+}
+
+double BlackScholesPathGenerator::getExpiry() { return expiry; }
+/*
+int main() {
+    BlackScholesPathGenerator pathGen(100, 0, 0, 0.2, 20, 100);
+    std::vector<double> path = pathGen.getPaths();
+    std::ofstream fout;
+    fout.open("path.txt");
+    for (int i = 0; i < path.size(); i++) {
+        fout << i << "\t" << path[i] << std::endl;
+    }
+    fout.close();
+}
+*/
