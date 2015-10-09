@@ -1,6 +1,5 @@
 #include "BlackScholesPathGenerator.hpp"
-#include <boost/random.hpp>
-#include <fstream>
+#include <iostream>
 
 BlackScholesPathGenerator::
 BlackScholesPathGenerator(double spot_,                           
@@ -13,36 +12,56 @@ BlackScholesPathGenerator(double spot_,
       NumOfSteps(NumOfSteps_)
 {
     path.resize(NumOfSteps + 1);
+    unsigned long seed =12411;
+    rngPtr = boost::shared_ptr<boost::mt19937> ( new boost::mt19937(seed) );
+    boost::normal_distribution<> norm(0.0, 1.0);
+
+    randPtr = boost::shared_ptr<
+        boost::variate_generator<boost::mt19937&,
+                                 boost::normal_distribution<> > > 
+        ( new boost::variate_generator<boost::mt19937&,
+          boost::normal_distribution<> >(*rngPtr, norm) );
 }
 
 std::vector<double> BlackScholesPathGenerator::getPaths() 
 {
-    unsigned long seed =12411;
-    boost::mt19937 rng(seed);
-    boost::normal_distribution <> norm(0.0, 1.0);    
-    boost::variate_generator<boost::mt19937&,boost::normal_distribution<> > 
-        randNorm(rng, norm);
-
     double currentSpot = spot;
     double increment = expiry/NumOfSteps;
     for (int i = 0; i <= NumOfSteps; i++) {
-        currentSpot *= exp( (drift-0.5*vol*vol)*increment
-                            + vol*sqrt(increment)*randNorm() );
         path[i] = currentSpot;
+        currentSpot *= exp( (drift-0.5*vol*vol)*increment
+                            + vol*sqrt(increment)*(*randPtr)());        
     }
     return path;
 }
 
+void BlackScholesPathGenerator::reset() 
+{
+    rngPtr->seed(12411UL);
+}
+
 double BlackScholesPathGenerator::getExpiry() { return expiry; }
 /*
+#include <fstream>
+
 int main() {
-    BlackScholesPathGenerator pathGen(100, 0, 0, 0.2, 20, 100);
+    BlackScholesPathGenerator pathGen(100, 0, 0, 0.2, 20, 1);
     std::vector<double> path = pathGen.getPaths();
-    std::ofstream fout;
-    fout.open("path.txt");
+    //std::ofstream fout;
+    //fout.open("path.txt");
     for (int i = 0; i < path.size(); i++) {
-        fout << i << "\t" << path[i] << std::endl;
+        //fout << i << "\t" << path[i] << std::endl;
+        std::cout << i << "\t" << path[i] << std::endl;
     }
-    fout.close();
+    //fout.close();
+    path = pathGen.getPaths();
+    for (int i = 0; i < path.size(); i++) {
+        std::cout << i << "\t" << path[i] << std::endl;
+    }
+    pathGen.reset();
+    path = pathGen.getPaths();
+    for (int i = 0; i < path.size(); i++) {
+        std::cout << i << "\t" << path[i] << std::endl;
+    }    
 }
 */

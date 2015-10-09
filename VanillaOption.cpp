@@ -15,8 +15,10 @@ double VanillaOption::getExpiry() const { return expiry; }
 
 double VanillaOption::getStrike() const { return strike; }
 
-double VanillaOption::getPayOff (double spot) const
+double VanillaOption::getPayOff (const std::vector<double>& path) const
 {
+    // vanilla option depends on the spot price at maturity
+    double spot = path[path.size()-1];
     switch (optionType) {
     case call:
         return fmax(spot - strike, 0.0);
@@ -28,11 +30,11 @@ double VanillaOption::getPayOff (double spot) const
 }
 /*
 int main() {
-    VanillaOption call(VanillaOption::put, 10., 100.);
-    //std::cout << call.getExpiry() << " " << call.getPayOff(110.) << std::endl;
-    VanillaOption* callPtr = &call;
-    std::cout << callPtr->getExpiry() << "\n";
-    std::cout << callPtr->getType() << "\n";
-    std::cout << callPtr->getStrike() << "\n";
+    VanillaOption call(VanillaOption::call, 10., 100.);
+    std::vector<double> spot(2);
+    spot[0] = 100.;
+    spot[1] = 110.;
+    std::cout << call.getPayOff(spot) << std::endl;
 }
 */
+

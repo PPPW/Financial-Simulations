@@ -1,0 +1,10 @@
+#include <vector>
+
+class Trees
+{
+public:
+    Trees() {}
+    std::vector<std::vector<double> > TheTree;
+    double priceEuropeanOption(const VanillaOption& option) const;
+private:
+};

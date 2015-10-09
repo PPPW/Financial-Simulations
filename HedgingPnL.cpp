@@ -1,6 +1,4 @@
 #include "HedgingPnL.hpp"
-#include "BlackScholesHedgingStrategy.hpp"
-#include "BlackScholesPathGenerator.hpp"
 #include "VanillaOption.hpp"
 #include <iostream>
 #include <math.h>
@@ -33,6 +31,9 @@ double HedgingPnL::getPnL()
     }
     return currentValue;
 }
+
+#include "BlackScholesHedgingStrategy.hpp"
+#include "BlackScholesPathGenerator.hpp"
 
 int main() {
     BlackScholesPathGenerator pathGen(100, 0, 0, 0.2, 20, 10);

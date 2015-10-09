@@ -2,30 +2,36 @@
 #define MONTE_CARLO
 
 #include "Instrument.hpp"
+#include "PathGenerator.hpp"
 #include <vector>
 
 class MonteCarlo 
 {
 public:
-    MonteCarlo(Instrument& instrument_, double spot_, double r_, 
-               double dvdnt_, double vol_, unsigned long Dimensionality_);   
+    MonteCarlo(Instrument& instrument_, 
+               PathGenerator& pathGen_, 
+               double r_, 
+               double dvdnt_, 
+               double vol_, 
+               unsigned long Dimensionality_);   
     std::vector<std::vector<double> > simulate();
+protected:
+    virtual double getOneResult(std::vector<double> path) const;
 private:
     Instrument* instrumentPtr;
-    double spot;
+    PathGenerator* pathGenPtr;
     double r;
     double dvdnt;
     double vol;
     unsigned long Dimensionality;
+    double expiry;
 
     std::vector<std::vector<double> > results;
     std::vector<double> resultsSoFar;
-    double expiry;
-    double brownian;
     unsigned long pathsDone;
-    double getOneResult() const;
+
     double currentMean() const;
-    double currentStd() const;
+    //double currentStd() const;
 };
 
 #endif

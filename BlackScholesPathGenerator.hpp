@@ -3,6 +3,8 @@
 
 #include "PathGenerator.hpp"
 #include <vector>
+#include <boost/random.hpp>
+#include <boost/shared_ptr.hpp>
 
 class BlackScholesPathGenerator : public PathGenerator
 {
@@ -14,6 +16,7 @@ public:
                               double expiry_,
                               unsigned long NumOfSteps_);
     virtual std::vector<double> getPaths();
+    virtual void reset();
     double getExpiry();
 private:
     double spot;
@@ -23,6 +26,11 @@ private:
     double expiry;
     unsigned long NumOfSteps;
     std::vector<double> path;
+    boost::shared_ptr<
+        boost::variate_generator<boost::mt19937&,
+                                 boost::normal_distribution<> > > 
+    randPtr;
+    boost::shared_ptr<boost::mt19937> rngPtr;
 };
 
 #endif

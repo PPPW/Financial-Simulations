@@ -1,0 +1,6 @@
+#ifndef ASIAN_OPTION
+#define ASIAN_OPTION
+
+class AsianOption
+
+#endif

@@ -2,6 +2,7 @@
 #define VANILLAOPTION
 
 #include "Instrument.hpp"
+#include <vector>
 
 class VanillaOption : public Instrument 
 {
@@ -13,7 +14,7 @@ public:
     OptionType getType() const;   
     double getExpiry() const;
     double getStrike() const;
-    double getPayOff(double spot) const;
+    double getPayOff(const std::vector<double>& path) const;
 private:
     OptionType optionType;
     double expiry;

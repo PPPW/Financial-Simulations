@@ -1,5 +1,5 @@
 OBJS = HedgingPnL.o BlackScholesHedgingStrategy.o BlackScholesPathGenerator.o VanillaOption.o VanillaGreeks.o BlackScholesFormulas.o
-CC = g++ -I /usr/local/include -std=c++11
+CC = g++
 DEBUG = -g
 CFLAGS = -c  
 LFLAGS = 

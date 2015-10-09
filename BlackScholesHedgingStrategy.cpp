@@ -1,5 +1,4 @@
 #include "BlackScholesHedgingStrategy.hpp"
-#include "BlackScholesPathGenerator.hpp"
 #include "VanillaGreeks.hpp"
 #include <iostream>
 
@@ -45,6 +44,8 @@ std::vector<double> BlackScholesHedgingStrategy::getHedgingStategy()
     return hedgingStrategy;
 }
 /*
+#include "BlackScholesPathGenerator.hpp"
+
 int main() {
     BlackScholesPathGenerator pathGen(100, 0, 0, 0.2, 20, 10);
     std::vector<double> path = pathGen.getPaths();
