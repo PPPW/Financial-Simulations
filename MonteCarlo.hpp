@@ -1,3 +1,10 @@
+/**
+   The MonteCarlo class takes an instrument and a random path, run simulate for
+   given number of times, record the result every power of 2. 
+   
+   @author Pei Wang
+ */
+
 #ifndef MONTE_CARLO
 #define MONTE_CARLO
 
@@ -28,7 +35,7 @@ private:
 
     std::vector<std::vector<double> > results;
     std::vector<double> resultsSoFar;
-    unsigned long pathsDone;
+    unsigned long numToRecord;
 
     double currentMean() const;
     //double currentStd() const;

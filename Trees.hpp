@@ -1,3 +1,9 @@
+/**
+   Abstract class, all tree models should inherit this class.
+
+   @author Pei Wang
+ */
+
 #ifndef TREES
 #define TREES
 

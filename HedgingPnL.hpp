@@ -1,3 +1,10 @@
+/**
+   The HedgingPnL class takes a random path, a hedging strategy and other market
+   parameters, calculates the profit and loss.
+   
+   @author Pei Wang
+ */
+
 #ifndef HEDGING_P_N_L
 #define HEDGING_P_N_L
 

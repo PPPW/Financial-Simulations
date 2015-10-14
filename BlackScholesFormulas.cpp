@@ -1,3 +1,7 @@
+/**
+   @author Pei Wang
+ */
+
 #include "BlackScholesFormulas.hpp"
 #include <boost/math/distributions.hpp>
 #include <math.h>

@@ -1,3 +1,11 @@
+/**
+   The AsianOption's interface is same as VanillaOption, the difference is
+   this getPayOff() function will calculate payoff by looking at the arithmetic
+   average of the input path.
+
+   @author Pei Wang
+ */
+
 #ifndef ASIAN_OPTION
 #define ASIAN_OPTION
 

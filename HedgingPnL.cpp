@@ -1,3 +1,7 @@
+/**
+   @author Pei Wang
+ */
+
 #include "HedgingPnL.hpp"
 #include "VanillaOption.hpp"
 #include <iostream>

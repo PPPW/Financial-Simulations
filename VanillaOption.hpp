@@ -1,3 +1,11 @@
+/**
+   The VanillaOption class. The getPayoff() function takes a path of spot
+   prices, only look at the last element, which in the current version is
+   considered to be the spot at maturity. 
+
+   @author Pei Wang
+ */
+
 #ifndef VANILLAOPTION
 #define VANILLAOPTION
 

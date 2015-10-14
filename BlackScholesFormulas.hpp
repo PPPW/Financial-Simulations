@@ -1,6 +1,7 @@
-/*
-Since for different instruments the solution is very different, so here didn't
-make it reusable. 
+/**
+   Black Scholes formulas for options.
+   
+   @author Pei Wang
  */
 
 #ifndef BLACKSCHOLESFORMULAS

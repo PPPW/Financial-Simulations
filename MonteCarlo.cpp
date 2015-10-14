@@ -1,3 +1,7 @@
+/**
+   @author Pei Wang
+ */
+
 #include "MonteCarlo.hpp"
 #include <boost/random.hpp>
 #include <math.h>
@@ -15,7 +19,7 @@ MonteCarlo::MonteCarlo(Instrument& instrument_,
     instrumentPtr = &instrument_;
     pathGenPtr = &pathGen_;
     expiry = instrumentPtr->getExpiry();
-    pathsDone = 0;
+    numToRecord = 1;
 }
 
 double MonteCarlo::getOneResult(std::vector<double> path) const
@@ -53,11 +57,12 @@ std::vector<std::vector<double> > MonteCarlo::simulate()
         path = pathGenPtr->getPaths();
         currentResult = getOneResult(path);
         resultsSoFar.push_back(currentResult);
-        pathsDone++;
-
-        currentResultNPath[0] = currentMean();
-        currentResultNPath[1] = pathsDone;
-        results.push_back(currentResultNPath);
+        if ( i+1 == 2*numToRecord) {
+            currentResultNPath[0] = currentMean();
+            currentResultNPath[1] = i+1;
+            results.push_back(currentResultNPath);
+            numToRecord = 2*numToRecord;
+        }
     }
     return results;
 }
@@ -76,7 +81,7 @@ int main() {
     BlackScholesPathGenerator pathGen(100, 0, 0, 0.2, 20, 5);
 
     MonteCarlo MC = MonteCarlo(callOption, pathGen, 0.01/365, 0.0, 0.02, 
-                               1000);
+                               1500);
     std::vector<std::vector<double> > results = MC.simulate();
 
     std::ofstream fout;

@@ -1,3 +1,9 @@
+/**
+   Abstract class, all random path generator should inherit this class.
+   
+   @author Pei Wang
+ */
+
 #ifndef PATH_GENERATOR
 #define PATH_GENERATOR
 

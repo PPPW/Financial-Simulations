@@ -1,3 +1,7 @@
+/**
+   @author Pei Wang
+ */
+
 #include "BinomialTree.hpp"
 #include <iostream>
 #include <math.h>

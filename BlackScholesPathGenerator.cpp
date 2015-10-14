@@ -1,3 +1,7 @@
+/**
+   @author Pei Wang
+ */
+
 #include "BlackScholesPathGenerator.hpp"
 #include <iostream>
 

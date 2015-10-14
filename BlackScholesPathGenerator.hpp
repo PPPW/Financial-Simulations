@@ -1,3 +1,10 @@
+/**
+   The BlackScholesPathGenerator class generates random path using Black Scholes
+   process. The seed is fixed and can be reset.
+   
+   @author Pei Wang
+ */
+
 #ifndef BLACK_SCHOLES_PATH_GENERATOR
 #define BLACK_SCHOLES_PATH_GENERATOR
 

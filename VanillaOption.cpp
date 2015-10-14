@@ -1,3 +1,7 @@
+/**
+   @author Pei Wang
+ */
+
 #include "VanillaOption.hpp"
 #include <math.h>
 #include <iostream>

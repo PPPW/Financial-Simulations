@@ -1,3 +1,7 @@
+/**
+   @author Pei Wang
+ */
+
 #include "AsianOption.hpp"
 #include <vector>
 #include <iostream>

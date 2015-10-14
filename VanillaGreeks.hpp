@@ -1,3 +1,9 @@
+/**
+   Analytical formulas of the vanilla greeks.
+
+   @author Pei Wang
+ */
+
 #ifndef VANILLA_GREEKS
 #define VANILLA_GREEKS
 

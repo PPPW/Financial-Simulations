@@ -1,3 +1,7 @@
+/**
+   @author Pei Wang
+ */
+
 #include "VanillaGreeks.hpp"
 #include "BlackScholesFormulas.hpp"
 #include <boost/math/distributions.hpp>

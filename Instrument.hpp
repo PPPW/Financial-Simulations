@@ -1,3 +1,10 @@
+/**
+   This is an abstract class, all instruments should inherit this class.
+
+   @author Pei Wang
+ */
+
+
 #ifndef INSTRUMENT
 #define INSTRUMENT
 

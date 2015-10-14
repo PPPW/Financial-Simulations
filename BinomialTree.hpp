@@ -1,3 +1,11 @@
+/**
+   The BinomialTree class generates the binomial tree and uses the tree to 
+   price different instruments.
+
+   @author Pei Wang
+ */
+
+
 #ifndef BINOMIAL_TREE
 #define BINOMIAL_TREE
 

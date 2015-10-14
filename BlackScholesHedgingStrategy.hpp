@@ -1,3 +1,10 @@
+/**
+   The BlackScholesHedgingStrategy class takes a random path and an instrument,
+   calculates a vector of number of stocks to hold using Delta.
+   
+   @author Pei Wang
+ */
+
 #ifndef BLACK_SCHOLES_HEDGING_STRATEGY
 #define BLACK_SCHOLES_HEDGING_STRATEGY
 

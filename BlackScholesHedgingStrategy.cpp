@@ -1,3 +1,7 @@
+/**
+   @author Pei Wang
+ */
+
 #include "BlackScholesHedgingStrategy.hpp"
 #include "VanillaGreeks.hpp"
 #include <iostream>

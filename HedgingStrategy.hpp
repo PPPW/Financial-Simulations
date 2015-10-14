@@ -1,3 +1,9 @@
+/**
+   This is an abstract class, all hedging strategies should inherit this class.
+
+   @author Pei Wang
+ */
+
 #ifndef HEDGING_STRATEGY
 #define HEDGING_STRATEGY
 
