@@ -26,9 +26,30 @@ BGMEngine::BGMEngine(const BGMProduct& theProduct_,
         LIBORRates[i].resize(i+1);
         LIBORRates[i][0] = (*spotForwardPtr)[i];
     }
+    numToRecord = 1;
 }
 
-std::vector<std::vector<double> > BGMEngine::getLIBORRates() 
+std::vector<std::vector<double> > BGMEngine::currentMean() const
+{
+    std::vector<std::vector<double> > mean(resultsSoFar[0].size());
+    for (int i = 0; i < mean.size(); i++) {
+        mean[i].resize(i+1);
+        for (int j = 0; j < mean[i].size(); j++) 
+            mean[i][j] = 0.;
+    }
+       
+    for (auto result : resultsSoFar) {
+        for (int i = 0; i < result.size(); i++) {
+            for (int j = 0; j < result[i].size(); j++) {
+                mean[i][j] += result[i][j] / resultsSoFar.size();   
+            }
+        }        
+    }
+    return mean;
+}
+
+std::map<unsigned long, std::vector<std::vector<double> > > 
+BGMEngine::getLIBORRates() 
 {
     // underlying times: from 0 to N-1
     // use the terminal rate (at N) as numeraire
@@ -44,30 +65,39 @@ std::vector<std::vector<double> > BGMEngine::getLIBORRates()
     boost::variate_generator<boost::mt19937&,
                              boost::normal_distribution<> > rand(rng, norm);
 
-    //std::cout << "W : ";
-    for (int j = 1; j < times.size(); j++) {
-        W[j] = W[j-1] + rand()*sqrt(times[j] - times[j-1]);
-        //std::cout << W[j] << " ";
-    }
-    //std::cout << std::endl;
+    // Monte Carlo --------------------------------------------------------
+    for (unsigned long N = 0; N < NumOfPaths; N++) {
 
-    double drift;    
-    for (int i = LIBORRates.size() - 1; i > 0; i--) {
-        drift = 0.;        
-        for (int j = 1; j < LIBORRates[i].size(); j++) {
-            for (int k = i+1; k < LIBORRates.size(); k++) {
-                drift += vols[k][j-1]*tenor*LIBORRates[k][j-1] / 
-                    (1 + tenor*LIBORRates[k][j-1]) * vols[k][j-1] * 
-                    LIBORRates[i][j-1] * (times[j] - times[j-1]);
-            }
-            LIBORRates[i][j] = LIBORRates[i][j-1] - drift + 
-                vols[i][j-1]*(W[j] - W[j-1]);
+        // one path -------------------------------------------------------
+        for (int j = 1; j < times.size(); j++) {
+            W[j] = W[j-1] + rand()*sqrt(times[j] - times[j-1]);
+        }
+
+        double drift;    
+        for (int i = LIBORRates.size() - 1; i > 0; i--) {
+            drift = 0.;        
+            for (int j = 1; j < LIBORRates[i].size(); j++) {
+                for (int k = i+1; k < LIBORRates.size(); k++) {
+                    drift += vols[k][j-1]*tenor*LIBORRates[k][j-1] / 
+                        (1 + tenor*LIBORRates[k][j-1]) * vols[k][j-1] * 
+                        LIBORRates[i][j-1] * (times[j] - times[j-1]);
+                }
+                LIBORRates[i][j] = LIBORRates[i][j-1] - drift + 
+                    vols[i][j-1]*(W[j] - W[j-1]);
             //std::cout <<"L["<<i<<","<<j<<"]: "<< LIBORRates[i][j] 
             //          << ", drift: "<<drift<< std::endl;
+            }
+        }
+        resultsSoFar.push_back(LIBORRates);
+        // one path done --------------------------------------------------
+
+        // save results every power of 2
+        if ( N+1 == 2*numToRecord) {
+            results[numToRecord] = currentMean();            
+            numToRecord = 2*numToRecord;
         }
     }
-
-    return LIBORRates;
+    return results;
 }
 
 #include <iostream>
@@ -82,12 +112,16 @@ int main() {
 
     BGMEngine bgm(swaption, volModel, spotForward, 10);
     
-    std::vector<std::vector<double> > LIBORRates;
+    std::map<unsigned long, std::vector<std::vector<double> > > LIBORRates;
     LIBORRates = bgm.getLIBORRates();
 
-    for (int i = 0; i < LIBORRates.size(); i++) {       
-        for (int j = 0; j < LIBORRates[i].size(); j++) {
-            std::cout << LIBORRates[i][j] << " ";
+    for (auto rates : LIBORRates) {    
+        std::cout << rates.first << std::endl;
+        for (int i = 0; i < rates.second.size(); i++) {
+            for (int j = 0; j < rates.second[i].size(); j++) {
+                std::cout << rates.second[i][j] << " ";
+            }
+            std::cout << std::endl;
         }
         std::cout << std::endl;
     }

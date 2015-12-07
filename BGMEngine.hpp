@@ -7,6 +7,7 @@
 
 #include "BGMProduct.hpp"
 #include "BGMVolModel.hpp"
+#include <map>
 
 class BGMEngine 
 {
@@ -16,7 +17,7 @@ public:
               const std::vector<double>& spotForward_,
               unsigned long NumOfPaths_
               );
-    std::vector<std::vector<double> > getLIBORRates();
+    std::map<unsigned long, std::vector<std::vector<double> > > getLIBORRates();
 private:
     const BGMProduct* theProductPtr;
     const BGMVolModel* volModelPtr;
@@ -26,6 +27,13 @@ private:
     std::vector<int> times;
     std::vector<std::vector<double> > vols;
     double tenor;
+
+    std::map<unsigned long, std::vector<std::vector<double> > > results;
+    std::vector<std::vector<std::vector<double> > > resultsSoFar;
+    unsigned long numToRecord;
+
+    std::vector<std::vector<double> > currentMean() const;
+    
 };
 
 #endif
