@@ -1,0 +1,80 @@
+/**
+   @author Pei Wang
+ */
+
+#include "BGMEngine.hpp"
+#include <boost/random.hpp>
+#include <math.h>
+
+BGMEngine::BGMEngine(const BGMProduct& theProduct_,
+                     const BGMVolModel& volModel_,
+                     const std::vector<double>& spotForward_,
+                     unsigned long NumOfPaths_
+                     ) : NumOfPaths(NumOfPaths_)
+{
+    theProductPtr = &theProduct_;
+    volModelPtr = &volModel_;    
+    spotForwardPtr = &spotForward_;
+    // need to use substeps to increase accuracy
+    times = theProductPtr->getUnderlyingTimes();
+    vols = volModelPtr->getVols(times);
+
+    tenor = 1.;
+    LIBORRates.resize(times.size());
+    // LIBORRates[i][j]: written at j, deliver from i to i+1, i >= j
+    for (int i = 0; i < times.size(); i++) {
+        LIBORRates[i].resize(i+1);
+        LIBORRates[i][0] = (*spotForwardPtr)[i];
+    }
+}
+
+std::vector<std::vector<double> > BGMEngine::getLIBORRates() 
+{
+    // underlying times: from 0 to N-1
+    // use the terminal rate (at N) as numeraire
+    // L_i is martingale under measure of i+1
+    // otherwise, has drift term depends on i+1 to N-1
+    // evolve LIBORRates[i][0] to get LIBORRates[i][j]
+
+    std::vector<double> W(LIBORRates.size(), 0.);
+
+    unsigned long seed =12411;
+    rng = boost::mt19937(seed);
+    boost::normal_distribution<> norm(0.0, 1.0);
+    rand = boost::variate_generator<boost::mt19937&,
+                             boost::normal_distribution<> >(rng, norm);
+
+    for (int j = 1; j < times.size(); j++) {
+        W[j] = W[j-1] + rand()*sqrt(times[j] - times[j-1])
+    }
+
+    double drift;
+    for (int i = LIBORRates.size() - 1; i < 0; i--) {
+        drift = 0.;
+        for (int j = 1; j < LIBORRates[i].size(); j++) {
+            for (int k = i+1; k < LIBORRates.size(); k++) {
+                drift += vols[k][j-1]*tenor*LIBORRates[k][j-1] / 
+                    (1 + tenor*LIBORRates[k][j-1]) * vols[k][j-1] * 
+                    LIBORRates[i][j-1] * (times[j] - times[j-1])
+            }
+            LIBORRates[i][j] = LIBORRates[i][j-1] - drift + 
+                vols[k][j-1]*(W[j] - W[j-1]);
+        }
+    }
+
+    return LIBORRates;
+}
+
+#include <iostream>
+
+int main() {
+    BGMConstantVol volModel;
+    std::vector<double> times(10, 1);
+    std::vector<std::vector<double> > vols = volModel.getVols(times);
+    for (int i = 0; i < vols.size(); i++) {       
+        for (int j = 0; j < vols[i].size(); j++) {
+            std::cout << vols[i][j] << " ";
+        }
+        std::cout << std::endl;
+    }
+}

@@ -1,6 +1,7 @@
 /**
    The BinomialTree class generates the binomial tree and uses the tree to 
-   price different instruments.
+   price different instruments. 
+   The default model is Cox-Ross-Rubinstein. 
 
    @author Pei Wang
  */
@@ -23,6 +24,7 @@ public:
                  double expiry_,
                  unsigned long NumOfPeriods_);
     std::vector<std::vector<double> > TheTree;
+    void printTree() const;
     virtual double priceEuropeanOption(const VanillaOption& option) const;
 private:
     double spot;
@@ -31,7 +33,8 @@ private:
     double vol;
     double expiry;
     double NumOfPeriods;
-    void buildTree();   
+    void buildTree();
+    double q; // q is model dependent
 };
 
 #endif

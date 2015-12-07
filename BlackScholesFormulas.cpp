@@ -5,7 +5,6 @@
 #include "BlackScholesFormulas.hpp"
 #include <boost/math/distributions.hpp>
 #include <math.h>
-#include <iostream>
 
 double BlackScholesCall(double spot, double strike, double expiry, 
                         double r, double dvdnt, double vol)
@@ -27,8 +26,18 @@ double BlackScholesPut(double spot, double strike, double expiry,
         + strike*exp(-r*expiry)*cdf(norm, -d2);
 }
 /*
+#include <iostream>
+#include <fstream>
 int main() {
-    double price = BlackScholesPut(100., 105., 20., 0.01/365, 0., 0.02); 
-    std::cout << price << std::endl;
+    std::ofstream fout;
+    fout.open("option.txt");
+    for (int i = 0; i< 10; i++) {
+        for (double spot = 100; spot < 110; spot+=1.0) {
+            double price = 
+                BlackScholesPut(spot, 105., i+0.1, 0.01/365, 0., 0.02); 
+            fout << spot <<'\t'<< price << std::endl;
+        }
+    }    
+    fout.close();
 }
 */

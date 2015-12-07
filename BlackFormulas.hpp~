@@ -1,0 +1,13 @@
+/**
+   @author Pei Wang
+ */
+
+#ifndef BLACK_FORMULAS
+#define BLACK_FORMULAS
+
+double PayersSwaption();
+double ReceiversSwaption();
+double Caplet();
+double Floorlet();
+
+#endif

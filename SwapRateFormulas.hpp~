@@ -4,8 +4,8 @@
    @author Pei Wang
  */
 
-#ifndef BLACK_SCHOLES_FORMULAS
-#define BLACK_SCHOLES_FORMULAS
+#ifndef BLACKSCHOLESFORMULAS
+#define BLACKSCHOLESFORMULAS
 
 // BS formula only need initial spot, not the value, so don't need to 
 // take option objects as inputs

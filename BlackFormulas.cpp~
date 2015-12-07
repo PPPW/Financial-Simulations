@@ -1,0 +1,25 @@
+/**
+   @author Pei Wang
+ */
+
+#include "BlackFormulas.hpp"
+
+double PayersSwaption() 
+{
+    return 42.;
+}
+
+double ReceiversSwaption() 
+{
+    return 42.;
+}
+
+double Caplet() 
+{
+    
+}
+
+double Floorlet() 
+{
+    return 42.;
+}
